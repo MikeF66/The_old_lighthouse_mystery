@@ -16,6 +16,14 @@ c.execute('''CREATE TABLE IF NOT EXISTS Characters (
              FOREIGN KEY(location) REFERENCES Locations(id)
              )''')
 
+# Добавляем данные в таблицу "Персонажи"
+c.execute("INSERT OR IGNORE INTO Characters (id, name, image, location) VALUES (?, ?, ?)", (1, 'Диктор', 'Characters/Diktor.jpg', 1))
+c.execute("INSERT OR IGNORE INTO Characters (id, name, image, location) VALUES (?, ?, ?)", (2, 'Кирилл', 'Characters/Kirill.jpeg', 2))
+c.execute("INSERT OR IGNORE INTO Characters (id, name, image, location) VALUES (?, ?, ?)", (3, 'Бармен', 'Characters/Barmen.jpeg', 2))
+
+
+
+
 # Создаем таблицу "Локации"
 c.execute('''CREATE TABLE IF NOT EXISTS Locations (
              id INTEGER PRIMARY KEY,
@@ -28,6 +36,18 @@ c.execute('''CREATE TABLE IF NOT EXISTS Locations (
              FOREIGN KEY(artefact) REFERENCES Artefacts(id)
              )''')
 
+# Добавляем данные в таблицу "Локации"
+c.execute("INSERT OR IGNORE INTO Locations (id, index, name, description, background_image, music, artefact) "
+          "VALUES (?, ?, ?, ?, ?)", (1, 0, 'Пролог', 'Молодой журналист Кирилл приезжает в небольшой прибрежный городок, '
+                                'чтобы написать статью о старом маяке, окруженном мрачными легендами и тайнами. '
+                                'По прибытии, Кирилл узнает о недавнем исчезновении местного сторожа маяка '
+                                'и решает начать собственное расследование.',
+                               'Characters/Diktor.jpeg', 'Location01_Prolog/plesk-voln.mp3', 0))
+c.execute("INSERT OR IGNORE INTO Locations (id, index, name, description, background_image, music, artefact) "
+          "VALUES (?, ?, ?, ?, ?)", (2, 1, 'Паб', 'Кирилл посещает местный паб, чтобы разузнать больше информации.'
+                                'loc1_1.jpg', 'loc1_1.mp3', 1))
+
+
 # Создаем таблицу "Артефакты"
 c.execute('''CREATE TABLE IF NOT EXISTS Artefacts (
              id INTEGER PRIMARY KEY,
@@ -35,6 +55,10 @@ c.execute('''CREATE TABLE IF NOT EXISTS Artefacts (
              description TEXT,
              status Boolean
              )''')
+
+# Добавляем данные в таблицу "Артефакты"
+c.execute("INSERT OR IGNORE INTO Artefacts (id, name, description, status) VALUES (?, ?, ?, ?)", (1, 'Записка пропавшего детектива',
+                                                                                                  'В этой записке находится первая часть кода', 0))
 
 # Создаем таблицу "Диалоги"
 c.execute('''CREATE TABLE IF NOT EXISTS Dialogs (
@@ -45,6 +69,36 @@ c.execute('''CREATE TABLE IF NOT EXISTS Dialogs (
              location INTEGER,
              FOREIGN KEY(location) REFERENCES Locations(id)
              )''')
+
+# Добавляем данные в таблицу "Диалоги"
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (1, 'Диктор', "Диктор: Молодой журналист Кирилл приезжает в небольшой прибрежный городок, "
+                               "чтобы написать статью о старом маяке, окруженном мрачными легендами и тайнами. "
+                               "По прибытии, Кирилл узнает о недавнем исчезновении местного сторожа маяка "
+                               "и решает начать собственное расследование.",
+           'Location01_Prolog/Prolog.mp3', 1))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (2, 'Кирилл', 'Здравствуйте, я Кирилл, новенький здесь.', 'Location1_dialogs/loc1_1_01.mp3', 2))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (3, 'Бармен', 'Приветствую, Кирилл! Что вам налить?', 'Location1_dialogs/loc1_1_02.mp3', 2))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (4, 'Кирилл', 'Кофе, пожалуйста! Я слышал, что вы можете рассказать много интересного о старом маяке.', 'Location1_dialogs/loc1_1_03.mp3', 2))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (5, 'Бармен', 'Да, маяк... Он уже много лет беспокоит умы местных.', 'Location1_dialogs/loc1_1_04.mp3', 2))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (6, 'Кирилл', 'Я весь во внимании, Расскажите.', 'Location1_dialogs/loc1_1_05.mp3', 2))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (7, 'Бармен', 'Странности начались, когда последний сторож исчез без вести.', 'Location1_dialogs/loc1_1_06.mp3', 2))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (8, 'Бармен', 'А недавно кто-то видел странные огни там. Кстати, вы не первый, кто интересуется маяком.', 'Location1_dialogs/loc1_1_07.mp3', 2))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (9, 'Бармен', 'Недавно тут был детектив, оставил записку, но так и не вернулся.', 'Location1_dialogs/loc1_1_08.mp3', 2))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (10, 'Кирилл', 'Записка? Можно мне её посмотреть?', 'Location1_dialogs/loc1_1_09.mp3', 2))
+c.execute("INSERT OR IGNORE INTO Dialogs (id, speaker, text, voice_clip, location) VALUES (?, ?, ?, ?, ?)",
+          (11, 'Бармен', 'Конечно, держите. Надеюсь, она поможет вам больше, чем тому бедняге.', 'Location1_dialogs/loc1_1_10.mp3', 2))
+
+
 
 # Загружаем персонажей из SQLite
 
@@ -274,6 +328,10 @@ class Menu:
 
     def save_game(self):
         # Логика для сохранения игры
+        pass
+
+    def load_game(self):
+        # Логика для загрузки игры
         pass
 
 class Notebook:
