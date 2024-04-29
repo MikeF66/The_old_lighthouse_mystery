@@ -1,7 +1,7 @@
 import pygame
 import sys
 from pygame.locals import *
-import os
+import webbrowser
 
 SCREEN_WIDTH = 1024  # размеры окна выбрал такими, потому что картинки 1024 х 512,
 SCREEN_HEIGHT = 512  # можно обрезать картинки (или заново сгенерить) если нужен другой размер
@@ -263,6 +263,9 @@ class Location:    # класс локации, все атрибуты можн
                         opt = 2
                     if opt is not None:                                # когда выбор сделан, opt is not None, - остановка воспроизведения звука
                         pygame.mixer.music.stop()
+                        if self.options[opt] == "Игра окончена":
+                            webbrowser.open_new_tab(self.next_locations[0])  # перенаправление на внешнюю страницу
+                        return opt
             self.screen.blit(self.background, (0, 0))
             for i, option in enumerate(self.options):
                 self.draw_text(f"{i + 1}. {option}", (100, 400 + 25 * i), font_size=24) # вывод надписей для выбора следующей локации
@@ -287,19 +290,19 @@ if __name__ == '__main__':
     loc01 = Location('Loc01_Prolog/loc01_Pab.jpg', 'Loc01_Prolog/plesk-voln.mp3',
                      ["Расспросить бармена местного паба", "Расспросить посетителей местного паба"])
 
-    loc1_1 = Location('loc1_1.jpg', 'loc1_1.mp3', ["Изучить записку",
+    loc1_1 = Location('Loc1_dialogs/loc1_1.jpg', 'Loc1_dialogs/loc1_1.mp3', ["Изучить записку",
                     "Расспросить посетителей бара"]) # создание локаций: loc1 - первая локация, _1 - первая сцена
     loc1_2 = Location('Loc1_2_Zapiska/loc1_2.jpg', 'Loc1_2_Zapiska/loc1_2.mp3', ["Дом сторожа маяка",
                     "Расспросить посетителей бара"])                  # локация: loc1_2 - первая локация, вторая сцена
-    loc1_3 = Location('loc1_3.jpg', 'loc1_3.mp3', ["Дом сторожа маяка",
+    loc1_3 = Location('Loc1_dialogs/loc1_3.jpg', 'Loc1_dialogs/loc1_3.mp3', ["Дом сторожа маяка",
                     "Изучить записку", "Расспросить бармена"])
-    loc2_1 = Location('loc2_1.jpg', 'loc2_1.mp3', ["Встреча в прибрежном лесу",
+    loc2_1 = Location('Loc2_dialogs/loc2_1.jpg', 'Loc2_dialogs/loc2_1.mp3', ["Встреча в прибрежном лесу",
                     "Разорванное письмо"]) # Соседка сторожа
     loc2_2 = Location('Loc2_2_Pismo/loc2_2.jpg', 'Loc2_2_Pismo/loc2_2.mp3', ["Встреча в прибрежном лесу",
                     "Вернуться в бар, изучить записку"]) # разорванное письмо
-    loc3_1 = Location('loc3_1.jpg', 'loc3_1.mp3', ["Старый маяк",
+    loc3_1 = Location('loc3_dialogs/loc3_1.jpg', 'loc3_dialogs/loc3_1.mp3', ["Старый маяк",
                     "Искать странный компас"]) # Встреча со старым рыбаком в прибрежном лесу
-    loc3_2 = Location('loc3_2.jpg', 'loc3_2.mp3', ["Старый маяк",
+    loc3_2 = Location('loc3_2_Kompas/loc3_2.jpg', 'loc3_2_Kompas/loc3_2.mp3', ["Старый маяк",
                     "Вернуться в дом сторожа, изучить разорванное письмо"])  # Странный компас
     loc4_1 = Location('loc4_1.jpg', 'loc4_1.mp3', ["Призрак старого хозяина маяка",
                     "Найти компас"])  # Старый маяк
@@ -323,7 +326,7 @@ if __name__ == '__main__':
     loc4_1.next_locations = [loc4_2, loc3_2]
     loc4_2.next_locations = [loc4_3, loc5_2]
     loc4_3.next_locations = [loc5_1]
-    loc5_1.next_locations = []
+    loc5_1.next_locations = ["https://university.zerocoder.ru/club-courses-new2"]
     loc5_2.next_locations = []
 
     loc01.dialog = [("Автор", " Молодой журналист Кирилл приезжает в небольшой прибрежный городок, "
@@ -428,12 +431,21 @@ if __name__ == '__main__':
     loc3_1.load_voice_clip(2, 'loc3_dialogs/loc3_1_03_Kirill.mp3')
     loc3_1.load_voice_clip(3, 'loc3_dialogs/loc3_1_04_Fisher.mp3')
 
-    loc3_2.load_voice_clip(0, 'loc3_dialogs/loc3_2_01_Kirill.mp3')
-    loc3_2.load_voice_clip(1, 'loc3_dialogs/loc3_2_02_Kirill.mp3')
-    loc3_2.load_voice_clip(2, 'loc3_dialogs/loc3_2_03_Kirill.mp3')
-    loc3_2.load_voice_clip(3, 'loc3_dialogs/loc3_2_04_Kirill.mp3')
+    loc3_2.load_voice_clip(0, 'loc3_2_Kompas/loc3_2_01_Kirill.mp3')
+    loc3_2.load_voice_clip(1, 'loc3_2_Kompas/loc3_2_02_Kirill.mp3')
+    loc3_2.load_voice_clip(2, 'loc3_2_Kompas/loc3_2_03_Kirill.mp3')
+    loc3_2.load_voice_clip(3, 'loc3_2_Kompas/loc3_2_04_Kirill.mp3')
 
+    loc4_1.load_voice_clip(0, 'loc4_1_near_Pharos/loc4_1_01_Kirill.mp3')
+    loc4_1.load_voice_clip(1, 'loc4_1_near_Pharos/loc4_1_02_Kirill.mp3')
+    loc4_1.load_voice_clip(2, 'loc4_1_near_Pharos/loc4_1_03_Kirill.mp3')
+    loc4_1.load_voice_clip(3, 'loc4_1_near_Pharos/loc4_1_04_Kirill.mp3')
 
+    loc4_2.load_voice_clip(0, 'loc4_dialogs/loc4_2_01_Ghost.mp3')
+    loc4_2.load_voice_clip(1, 'loc4_dialogs/loc4_2_02_Kirill.mp3')
+    loc4_2.load_voice_clip(2, 'loc4_dialogs/loc4_2_03_Ghost.mp3')
+    loc4_2.load_voice_clip(3, 'loc4_dialogs/loc4_2_04_Kirill.mp3')
+    loc4_2.load_voice_clip(4, 'loc4_dialogs/loc4_2_05_Ghost.mp3')
 
     loc4_3.load_voice_clip(0, 'loc4_dialogs/loc4_3_01_Kirill.mp3')
     loc4_3.load_voice_clip(1, 'loc4_dialogs/loc4_3_02_Kirill.mp3')
@@ -443,6 +455,7 @@ if __name__ == '__main__':
 
     loc5_1.load_voice_clip(0, 'Loc5_Return_Home/loc5_1_01_Kirill.mp3')
     loc5_1.load_voice_clip(1, 'Loc5_Return_Home/loc5_1_02_Kirill.mp3')
+
     loc5_2.load_voice_clip(0, 'Loc5_Return_Home/loc5_2_01_Kirill.mp3')
     loc5_2.load_voice_clip(1, 'Loc5_Return_Home/loc5_2_02_Kirill.mp3')
 
@@ -450,11 +463,11 @@ if __name__ == '__main__':
     loc1_1.character_images['Кирилл'] = pygame.image.load('Loc1_dialogs/Kirill.jpeg')
     loc1_1.character_images['Бармен'] = pygame.image.load('Loc1_dialogs/Barmen.jpeg')
     loc1_3.character_images['Кирилл'] = pygame.image.load('Loc1_dialogs/Kirill.jpeg')
-    loc1_3.character_images['Посетитель бара'] = pygame.image.load('loc1_3.jpg')
+    loc1_3.character_images['Посетитель бара'] = pygame.image.load('Loc1_dialogs/loc1_3.jpg')
     loc2_1.character_images['Кирилл'] = pygame.image.load('Loc1_dialogs/Kirill.jpeg')
-    loc2_1.character_images['Соседка сторожа'] = pygame.image.load('loc2_1.jpg')
+    loc2_1.character_images['Соседка сторожа'] = pygame.image.load('Loc2_dialogs/loc2_1.jpg')
     loc3_1.character_images['Кирилл'] = pygame.image.load('Loc1_dialogs/Kirill.jpeg')
-    loc3_1.character_images['Рыбак'] = pygame.image.load('loc3_1.jpg')
+    loc3_1.character_images['Рыбак'] = pygame.image.load('loc3_dialogs/loc3_1.jpg')
     loc4_2.character_images['Призрак'] = pygame.image.load('loc4_2.jpg')
     loc4_2.character_images['Кирилл'] = pygame.image.load('Loc1_dialogs/Kirill.jpeg')
     loc4_3.character_images['Table'] = pygame.image.load('Loc4_3_Table/loc4_3.jpg')
