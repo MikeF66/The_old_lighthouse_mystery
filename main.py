@@ -263,9 +263,12 @@ class Location:    # класс локации, все атрибуты можн
                         opt = 2
                     if opt is not None:                                # когда выбор сделан, opt is not None, - остановка воспроизведения звука
                         pygame.mixer.music.stop()
-                        if self.options[opt] == "Игра окончена":
-                            webbrowser.open_new_tab(self.next_locations[0])  # перенаправление на внешнюю страницу
-                        return opt
+                        if isinstance(self.next_locations[opt], str):  # Проверка на тип объекта - строка
+                            webbrowser.open_new_tab(self.next_locations[opt])  # Открытие внешней ссылки
+                            return "menu"  # Возврат в меню после открытия ссылки
+                        else:
+                            self.next_locations[opt].run()  # Переход к следующей локации
+                            return None
             self.screen.blit(self.background, (0, 0))
             for i, option in enumerate(self.options):
                 self.draw_text(f"{i + 1}. {option}", (100, 400 + 25 * i), font_size=24) # вывод надписей для выбора следующей локации
@@ -281,6 +284,9 @@ class Location:    # класс локации, все атрибуты можн
             next_location = self.next_locations[opt]
             if next_location:
                 next_location.run()
+            next_action = next_location.choose_action()
+            if next_action == "menu":
+                return "menu"
         else:
             pygame.quit()
 
